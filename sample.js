@@ -127,3 +127,29 @@
 
 
 app.post('/memorizeConfig', dashboardCtrl.memorizeConfig); // NEIL service
+
+
+
+
+// NEIL-memorize
+exports.memorizeConfig = function (req, res) {
+
+    var resJSON = {};
+    var saveData = req.body.mainFlow;
+
+    console.log("*-*-*-*-*-*-**-*--");
+    console.log("---saveData--++++++");
+    console.log(saveData);
+    console.log("*-*-*-*-*-*-**-*--");
+
+    res.send(saveData);
+    /*var fromDate = req.body.fromDate;
+    var toDate = req.body.toDate;*/
+
+    //export that info in json
+    fs.writeFile('./neil_task.json', JSON.stringify(saveData), 'utf-8', function(err) {
+       if (err) throw err
+        console.log('memorized right data flows! Done!')
+      });
+}
+// NEIL-memorize
