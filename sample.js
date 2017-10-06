@@ -153,3 +153,40 @@ exports.memorizeConfig = function (req, res) {
       });
 }
 // NEIL-memorize
+
+
+
+//debugger;
+                //NEW CODE : NEIL
+                var groupIds = {};
+                var i2 = 0;
+                data.forEach(function(item){
+                  groupIds[i2] = item.groupId;
+                  i2++;
+                });
+
+                var height = 350 - margin.top - margin.bottom;//document.getElementById('chart-div').clientHeight - margin.top - margin.bottom;
+                var width = 700 - margin.right - margin.left;
+
+                // Draw legend
+                var legend = svg.selectAll(".legend")
+                    .data(groupIds)
+                    .enter().append("g")
+                    .attr("class", "legend")
+                    .attr("transform", function(d, i) { return "translate(30," + i * 19 + ")"; });
+
+                legend.append("rect")
+                    .attr("x", width - 18)
+                    .attr("width", 18)
+                    .attr("height", 18)
+                    .style("fill", function(d, i) {
+                        return color[i];
+                    });
+
+                legend.append("text")
+                    .attr("x", width + 5)
+                    .attr("y", 9)
+                    .attr("dy", ".35em")
+                    .style("text-anchor", "start")
+                    .text(function(d) { return d;});
+                //NEW CODE : NEIL
