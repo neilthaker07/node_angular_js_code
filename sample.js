@@ -190,3 +190,156 @@ exports.memorizeConfig = function (req, res) {
                     .style("text-anchor", "start")
                     .text(function(d) { return d;});
                 //NEW CODE : NEIL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  $scope.addDateFilter = function (seqId, fromDate, toDate) { // NEIL
+    
+
+      response=response+'<div id=tileNo ng-init="tileNo='+seqId+'"; startDate='+fromDate+'"; endDate='+toDate+'"></div></div>';
+          
+
+
+          indexAngularApp.controller('alarmAnalysisCtrl', function ($scope,$rootScope, $http, $sce, $compile, sharedService) {
+
+    //$scope.date = {startDate: null, endDate: null};
+    $scope.date = {startDate: startDate, endDate: endDate};
+    $scope.showCal=1;
+  
+
+
+
+
+
+  //NEIL
+    $scope.$on('memorySetDash', function() {
+      var flowData = getDataFlowFunction();
+        $http({
+            method : 'POST',
+            url: '/memorizeConfig',
+            data:{
+                  'mainFlow' : flowData
+            }
+        }).then(function (res) {
+            if(res.status == 200){
+                console.log(res);
+            }else{
+                console.log(res.status);
+            }
+        },function (err) {
+            console.log(err);
+        });
+    });
+
+    $scope.$on('memoryGetDash', function() {
+        $http({
+            method : 'POST',
+            url: '/showMemorizeConfig',
+            data:{
+                  'mainFlow' : ""
+            }
+        }).then(function (res) {
+            if(res.status == 200){
+                console.log("--after getting response - 200 - memoryGetDash--");
+                console.log(res.data);
+                var dash = res.data;
+                createDashboard(dash);
+                console.log("--after getting creation, next refresh save dashboard");
+                refreshSavedDashboard(dash);
+            }else{
+                console.log(res.status);
+            }
+        },function (err) {
+            console.log(err);
+        });
+    });
+    //NEIL
+    //addLiveLineChart();
+
+
+
+
+
+
+
+
+
+
+
+      function refreshSavedDashboard(allFlows) {
+      console.log("just in refreshSavedDashboard");
+      var flows = allFlows["memoryFlows"];
+      console.log("---------flows---------");
+      console.log(flows);
+
+      for(var i=0; i<flows.length; i++)
+      {
+        var eachFlow = {};
+        eachFlow = flows[i];
+
+        var dataFlowName = eachFlow["name"];
+        var fromDate = eachFlow["fromDate"];
+        var toDate = eachFlow["toDate"];
+        var seqId = eachFlow["seqId"];
+
+        var element = document.getElementById('FILL'+(seqId));
+        console.log("--inside element-----"+seqId);
+        var element2=element.getElementsByTagName('stacked-bar-chart');
+        if (element2.length == 0)
+          element2=element.getElementsByTagName('pareto-chart');
+        $(element2).remove();
+        var level=0;
+        var element3=element.getElementsByTagName('button');
+        if (element2.length == 0)
+          level=0;
+        else level=1;
+
+        var dash = eachFlow;
+        console.log("-----IMP-2--------");
+        console.log(dash);
+        console.log("-----IMP-2--------");
+        $http({
+            method : 'POST',
+            url: '/getDashConfig',
+            data:{
+                'dashName' : dataFlowName,
+                'fromDate':$scope.fromDate,
+                'toDate':$scope.toDate
+            }
+        }).then(function (res) {
+            if(res.status == 200){
+                console.log("ACTUAL NEED - -----------NEED-------");
+                console.log(res);
+                dash.paramJSON = res.data;
+                dash.paramJSON.seqId = dash.seqId;
+                dash.chartLevel=level;
+
+                sharedService.refreshDashBroadcast(dash);
+            }else{
+                console.log(res.status);
+            }
+        },function (err) {
+            console.log(err);
+        });
+      }
+      console.log("end in the refreshSavedDashboard");
+    };
+
+    // NEIL
+    function getDataFlowFunction() {
+        return $scope.getDataFlowInfo();
+    };
+    // NEIL
