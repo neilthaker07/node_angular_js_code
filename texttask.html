@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>testing</title>
+</head>
+<body>
+
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('MyApp', [])
+        app.controller('MyController', function ($scope) {
+            //This will hide the DIV by default.
+            $scope.IsVisible = false;
+            $scope.ShowHide = function () {
+                //If DIV is visible it will be hidden and vice versa.
+                $scope.IsVisible = $scope.IsVisible ? false : true;
+            }
+
+            $scope.SaveFlows = function () {
+                $scope.IsVisible = false;
+            }
+
+            $scope.modalShown = false;
+            $scope.toggleModal = function() {
+              $scope.modalShown = $scope.modalShown ? false : true;
+            };
+
+        });
+/*
+        app.controller('MyCtrl', function($scope) {
+          $scope.modalShown = false;
+          $scope.toggleModal = function() {
+            $scope.modalShown = !$scope.modalShown;
+          };
+        });
+*/
+    </script>
+
+
+    <div ng-app="MyApp" ng-controller="MyController">
+        <input type="button" value="Show Hide DIV" ng-click="ShowHide()" />
+        <br />
+        <br />
+        <div ng-show = "IsVisible">
+          Name<input type="text" name="fname"> <br>
+          <input type="button" value="Save" ng-click="SaveFlows()" />
+        </div>
+
+        <input type="button"  value="Open Modal Dialog" ng-click="toggleModal()" />
+        <modal-dialog show='modalShown' width='750px' height='60%'>
+          <p>Modal Content Goes here
+            <p>
+        </modal-dialog>
+
+    </div>
+
+
+</body>
+</html>

@@ -415,3 +415,60 @@ exports.memorizeConfig = function (req, res) {
                               "level": resJSON.level,
                               "existingDrillCookie":existingDrillCookie //NEIL
                           }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          // NOT used
+
+
+//NEIL
+            //dashName
+            // here here here
+            console.log("here here here ");
+            console.log(req.body.drillDownID+ " : "+ req.body.drillDownVariable+" : "+req.body.drillDownValue+": "+req.body.level);
+            console.log("here here here ");
+
+            var drillList = [];
+            var drillDownLength = req.body.existingDrillCookie.length;
+            console.log("here here here-------------------- "+!req.body.existingDrillCookie);
+            console.log(drillDownLength);
+            if(!req.body.existingDrillCookie) {
+              drillList = existingDrillCookie;
+            }
+            var drillMap = {};
+            drillMap[fileName+"drillDownID"] = req.body.drillDownID;
+            drillMap[fileName+"drillDownVariable"] = req.body.drillDownVariable;
+            drillMap[fileName+"drillDownValue"] = req.body.drillDownValue;
+            drillMap[fileName+"level"] = req.body.level;
+            console.log("qwet : ");
+            var t = drillList.length<1 ? 0 : drillList.length;
+            drillList[0] = drillMap;
+
+            res.cookie(fileName+"drillDownID", drillList);
+            /*res.cookie(fileName+"drillDownID", req.body.drillDownID);
+            res.cookie(fileName+"drillDownVariable", req.body.drillDownVariable);
+            res.cookie(fileName+"drillDownValue", req.body.drillDownValue);
+            res.cookie(fileName+"level", req.body.level);*/
+//NEIL
+
+
+
+//NEIL
+                        var existingDrill = new RegExp(resJSON.name+"drillDownID");
+                        var existingDrillCookie = existingDrill.exec(document.cookie);
+                        existingDrillCookie = (existingDrillCookie != null) ? unescape(existingDrillCookie[1]) : null;
+                        console.log("*+*+"+existingDrillCookie);
+//NEIL
